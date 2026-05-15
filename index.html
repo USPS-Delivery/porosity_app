@@ -32,54 +32,38 @@
 
 <div class="container">
     <h2>Effective Porosity (Ne) Tool</h2>
-    
     <div class="grid-layout">
         <div class="card">
             <label>Flow Rate (Q) Units</label>
             <select id="unitQ">
                 <option value="1">m&sup3;/day</option>
-                <option value="5.45099">Gallons/min (GPM)</option>
+                <option value="5.45099">GPM</option>
                 <option value="86.4">Liters/sec</option>
                 <option value="24">m&sup3;/hour</option>
             </select>
-            
             <label>Drawdown (s) Units</label>
             <select id="unitS">
                 <option value="1">Meters</option>
                 <option value="0.3048">Feet</option>
             </select>
-
-            <label>Manual Flow Rate (Q)</label>
+            <label>Manual Entry (Q)</label>
             <input type="number" id="manualQ" placeholder="Enter Q" inputmode="decimal">
-            <label>Manual Drawdown (s)</label>
+            <label>Manual Entry (s)</label>
             <input type="number" id="manualS" placeholder="Enter s" inputmode="decimal">
-            <button onclick="addManual()">Calculate</button>
+            <button onclick="addManual()">Calculate & Save</button>
         </div>
-
         <div class="card">
-            <label>CSV Analysis</label>
+            <label>Bulk CSV Processing</label>
             <input type="file" id="csvInput" accept=".csv">
             <button class="btn-success" onclick="processBulk()">Process File</button>
-            <div id="statsArea" class="stats-box">
-                <div id="statsContent"></div>
-            </div>
+            <div id="statsArea" class="stats-box"><div id="statsContent"></div></div>
         </div>
     </div>
-
-    <div id="chartArea" class="chart-container">
-        <canvas id="neChart"></canvas>
-    </div>
-
+    <div id="chartArea" class="chart-container"><canvas id="neChart"></canvas></div>
     <div class="card">
         <div style="overflow-x:auto;">
             <table id="resultsTable">
-                <thead>
-                    <tr>
-                        <th>Q (m&sup3;/d)</th>
-                        <th>s (m)</th>
-                        <th>Result (Ne)</th>
-                    </tr>
-                </thead>
+                <thead><tr><th>Q (m&sup3;/d)</th><th>s (m)</th><th>Result (Ne)</th></tr></thead>
                 <tbody id="tableBody"></tbody>
             </table>
         </div>
@@ -88,7 +72,7 @@
 </div>
 
 <script>
-    // Self-contained Service Worker for Installation
+    // Registration of Service Worker for "Offline" and "Install" support
     if ('serviceWorker' in navigator) {
         const sw = 'data:application/javascript,self.addEventListener("fetch", function(event){});';
         navigator.serviceWorker.register('data:application/javascript;base64,' + btoa(sw));
@@ -147,7 +131,7 @@
         }
         const nes = dataset.map(d => parseFloat(d.ne));
         const mean = nes.reduce((a, b) => a + b) / nes.length;
-        document.getElementById('statsContent').innerHTML = "<b>Average Ne:</b> " + mean.toFixed(6) + "<br><b>Total Points:</b> " + nes.length;
+        document.getElementById('statsContent').innerHTML = "<b>Average Ne:</b> " + mean.toFixed(6);
     }
 
     function renderChart() {
@@ -158,7 +142,7 @@
             type: 'line',
             data: {
                 labels: sorted.map(d => d.ratio),
-                datasets: [{ label: 'Ne Result', data: sorted.map(d => d.ne), borderColor: '#2b6cb0', backgroundColor: 'rgba(43,108,176,0.1)', fill: true }]
+                datasets: [{ label: 'Ne Result', data: sorted.map(d => d.ne), borderColor: '#2b6cb0', fill: false }]
             },
             options: { responsive: true, maintainAspectRatio: false }
         });
