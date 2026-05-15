@@ -18,7 +18,7 @@
         @media (min-width: 600px) { .grid-layout { grid-template-columns: 1fr 1fr; } }
         .card { background: #f8fafc; padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0; }
         label { display: block; margin: 8px 0 4px; font-weight: bold; font-size: 0.9rem; color: #4a5568; }
-        input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 8px; font-size: 16px; margin-bottom: 10px; box-sizing: border-box; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 8px; font-size: 16px; margin-bottom: 10px; box-sizing: border-box; background: white; }
         button { background-color: #2b6cb0; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; width: 100%; font-size: 1rem; cursor: pointer; }
         .btn-success { background-color: #38a169; margin-top: 10px; }
         .stats-box { background: #ebf8ff; padding: 15px; border-left: 4px solid #3182ce; border-radius: 4px; margin-top: 15px; display: none; }
@@ -88,6 +88,12 @@
 </div>
 
 <script>
+    // Self-contained Service Worker for Installation
+    if ('serviceWorker' in navigator) {
+        const sw = 'data:application/javascript,self.addEventListener("fetch", function(event){});';
+        navigator.serviceWorker.register('data:application/javascript;base64,' + btoa(sw));
+    }
+
     let dataset = [];
     let myChart = null;
 
